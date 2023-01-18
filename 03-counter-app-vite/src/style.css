@@ -1,0 +1,35 @@
+body,
+html {
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    background-color: #343232;
+}
+
+h1,
+h2 {
+    color: #fff;
+}
+
+.butt {
+    display: flex;
+    gap: 5px
+}
+
+button {
+    background-color: rgb(74, 73, 73);
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border: 1px solid #fff;
+    color: #fff;
+    transition: all 0.12s ease-in-out;
+}
+
+button:hover {
+    background-color: #fff;
+    color: #000;
+}
