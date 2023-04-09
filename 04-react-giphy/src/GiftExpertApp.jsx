@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { AddCategory } from '../../03-counter-app-vite/src/components/AddCategory';
+import { AddCategory } from './components/AddCategory';
+import { GifGrid } from './components/GifGrid';
 export const GiftExpertApp = () => {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState(['Dragon Ball']);
 
   const onAddCategory = (newCat) => {
     if (categories.includes(newCat)) return;
@@ -10,26 +11,13 @@ export const GiftExpertApp = () => {
 
   return (
     <>
-      {/* Titulo */}
-
       <h1>GiftExpertApp</h1>
-      {/* Input */}
-      <AddCategory
-        // setCategories={setCategories}
-        onNewCategory={onAddCategory}
-      />
-      {/* Listado de gif */}
-      <ol>
-        {categories.map((category) => {
-          return (
-            <div key={category}>
-              <h3>pollo</h3>
-              <li>{category}</li>
-            </div>
-          );
-        })}
-      </ol>
-      {/* gif item */}
+
+      <AddCategory onNewCategory={onAddCategory} />
+
+      {categories.map((category) => (
+        <GifGrid key={category} category={category} />
+      ))}
     </>
   );
 };
