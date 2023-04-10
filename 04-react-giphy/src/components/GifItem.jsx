@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 export const GifItem = ({ title, url }) => {
   const [copied, setCopied] = useState(false);
@@ -35,4 +36,9 @@ export const GifItem = ({ title, url }) => {
     </div>
     // </li>
   );
+};
+
+GifItem.propTypes = {
+  title: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
 };

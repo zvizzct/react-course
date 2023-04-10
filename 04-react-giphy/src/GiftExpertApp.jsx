@@ -12,7 +12,6 @@ export const GiftExpertApp = () => {
     setCategories((prevCategories) => [newCat]);
     if (history && history.includes(newCat)) return;
     setHistory((prevHistory) => [newCat, ...prevHistory]);
-    console.log(newCat, categories, history);
   };
 
   return (
