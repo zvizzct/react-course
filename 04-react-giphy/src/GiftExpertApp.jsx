@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AddCategory, GifGrid, Header, GifHistory } from './components';
 export const GiftExpertApp = () => {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState(['The Office']);
   const [history, setHistory] = useState([]);
 
   const onSelectCategory = (selectedCat) => {
@@ -9,8 +9,8 @@ export const GiftExpertApp = () => {
   };
   const onAddCategory = (newCat) => {
     if (categories.includes(newCat)) return;
-    if (history && history.includes(newCat)) return;
     setCategories((prevCategories) => [newCat]);
+    if (history && history.includes(newCat)) return;
     setHistory((prevHistory) => [newCat, ...prevHistory]);
     console.log(newCat, categories, history);
   };
