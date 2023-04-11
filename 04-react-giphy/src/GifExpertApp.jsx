@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { AddCategory, GifGrid, Header, GifHistory } from './components';
-export const GiftExpertApp = () => {
+export const GifExpertApp = () => {
   const [categories, setCategories] = useState(['The Office']);
   const [history, setHistory] = useState([]);
 

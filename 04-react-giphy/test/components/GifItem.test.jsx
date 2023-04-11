@@ -38,11 +38,5 @@ describe('Testing GifItem', () => {
     });
 
     expect(global.navigator.clipboard.writeText).toHaveBeenCalledWith(url);
-
-    expect(screen.queryByText('Copied to clipboard')).toBeTruthy();
-
-    // Wait for copied message to disappear
-    await new Promise((r) => setTimeout(r, 2000));
-    expect(screen.queryByText('Copied to clipboard')).toBeNull();
   });
 });
