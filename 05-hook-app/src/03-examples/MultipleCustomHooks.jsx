@@ -20,7 +20,7 @@ export const MultipleCustomHooks = () => {
         <Char data={data} />
       )}
 
-      <button className="btn btn-primary" onClick={increment}>
+      <button className="btn btn-primary" onClick={(e) => increment()}>
         Next char
       </button>
     </>

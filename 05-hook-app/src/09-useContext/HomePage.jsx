@@ -20,6 +20,7 @@ export const HomePage = () => {
       <button className="btn btn-primary" onClick={handleUser}>
         Add user
       </button>
+      <pre aria-label="pre">{JSON.stringify(user, null, 3)}</pre>
     </>
   );
 };
