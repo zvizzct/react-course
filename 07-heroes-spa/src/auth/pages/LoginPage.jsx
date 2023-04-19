@@ -1,9 +1,12 @@
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { AuthContext } from '../context/AuthContext'
 
 export const LoginPage = () => {
   const navigate = useNavigate()
-
-  const LoginPage = () => {
+  const { login } = useContext(AuthContext)
+  const handleLogin = () => {
+    login('Jorge')
     navigate('/', {
       replace: true
     })
@@ -14,7 +17,7 @@ export const LoginPage = () => {
       <h1>Login</h1>
       <hr />
 
-      <button className="btn btn-primary" onClick={LoginPage}>
+      <button className="btn btn-primary" onClick={handleLogin}>
         Login
       </button>
     </div>
