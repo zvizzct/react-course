@@ -1,18 +1,20 @@
 import { useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
 
 export const LoginPage = () => {
   const navigate = useNavigate()
-  const { login } = useContext(AuthContext)
+  const { logged, login } = useContext(AuthContext)
+  const lastPath = localStorage.getItem('lastPath') || '/'
+  console.log(lastPath)
   const handleLogin = () => {
     login('Jorge')
-    navigate('/', {
+    navigate(lastPath, {
       replace: true
     })
   }
 
-  return (
+  return !logged ? (
     <div className="container mt-5">
       <h1>Login</h1>
       <hr />
@@ -21,5 +23,7 @@ export const LoginPage = () => {
         Login
       </button>
     </div>
+  ) : (
+    <Navigate to={lastPath} />
   )
 }

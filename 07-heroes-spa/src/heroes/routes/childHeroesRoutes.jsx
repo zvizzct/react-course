@@ -1,5 +1,6 @@
 import { Navigate } from 'react-router-dom'
 import { MarvelPage, DcPage, SearchPage, HeroPage } from '../pages'
+import { AllHeroPage } from '../pages/AllHeroPage'
 
 export const childHeroesRoutes = [
   {
@@ -18,6 +19,10 @@ export const childHeroesRoutes = [
 
   {
     path: '*',
-    element: <Navigate to="/marvel" />
+    element: <Navigate to="/" />
+  },
+  {
+    path: '/',
+    element: <AllHeroPage />
   }
 ]
