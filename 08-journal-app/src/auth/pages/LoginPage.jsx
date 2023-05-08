@@ -2,27 +2,26 @@ import { useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { Link as RouterLink } from 'react-router-dom'
-import { Button, Grid, Link, TextField, Typography } from '@mui/material'
+import { Alert, Button, Grid, Link, TextField, Typography } from '@mui/material'
 import { Google } from '@mui/icons-material'
 import { AuthLayout } from '../layout/AuthLayout'
 import { useForm } from '../../hooks'
 import {
-  checkingAuthentication,
-  startGoogleSignIn
+  startGoogleSignIn,
+  startLoginWithEmailAndPassword
 } from '../../store/auth/thunks'
 
 export const LoginPage = () => {
-  const { status } = useSelector((state) => state.auth)
+  const { status, errorMessage } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
   const { email, password, onInputChange } = useForm({
     email: 'victor@gmail.com',
     password: '123456'
   })
   const isAuthenticating = useMemo(() => status === 'checking', [status])
-  console.log(isAuthenticating)
   const onSubmit = (e) => {
     e.preventDefault()
-    dispatch(checkingAuthentication(email, password))
+    dispatch(startLoginWithEmailAndPassword({ email, password }))
   }
   const onGoogleSignIn = () => {
     dispatch(startGoogleSignIn())
@@ -38,6 +37,7 @@ export const LoginPage = () => {
               type="email"
               placeholder="email@google.com"
               fullWidth
+              name="email"
               value={email}
               onChange={onInputChange}
             />
@@ -48,11 +48,18 @@ export const LoginPage = () => {
               type="password"
               placeholder="Password"
               fullWidth
+              name="password"
               value={password}
               onChange={onInputChange}
             />
           </Grid>
           <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
+            {errorMessage && (
+              <Grid item xs={12} sm={12}>
+                <Alert severity="error">{errorMessage}</Alert>
+              </Grid>
+            )}
+
             <Grid item xs={12} sm={6}>
               <Button
                 disabled={isAuthenticating}
