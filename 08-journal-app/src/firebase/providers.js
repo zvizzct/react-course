@@ -1,21 +1,23 @@
 import {
-  GoogleAuthProvider,
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   signInWithPopup,
   updateProfile
 } from 'firebase/auth'
-import { FirebaseApp, FirebaseAuth } from './config'
+import { FirebaseAuth } from './config'
 
 const googleProvider = new GoogleAuthProvider()
 
-export const signInWithGoogle = async () => {
+export const singInWithGoogle = async () => {
   try {
     const result = await signInWithPopup(FirebaseAuth, googleProvider)
-    // const credentials = GoogleAuthProvider.credentialFromResult(result)
+    // const credentials = GoogleAuthProvider.credentialFromResult( result );
     const { displayName, email, photoURL, uid } = result.user
+
     return {
       ok: true,
+      // User info
       displayName,
       email,
       photoURL,
@@ -27,13 +29,12 @@ export const signInWithGoogle = async () => {
 
     return {
       ok: false,
-      errorCode,
       errorMessage
     }
   }
 }
 
-export const registerUserWithEmailAndPassword = async ({
+export const registerUserWithEmailPassword = async ({
   email,
   password,
   displayName
@@ -44,54 +45,39 @@ export const registerUserWithEmailAndPassword = async ({
       email,
       password
     )
-    await updateProfile(FirebaseAuth.currentUser, { displayName })
     const { uid, photoURL } = resp.user
+
+    await updateProfile(FirebaseAuth.currentUser, { displayName })
+
     return {
       ok: true,
       uid,
-      displayName,
+      photoURL,
       email,
-      photoURL
+      displayName
     }
   } catch (error) {
-    return {
-      ok: false,
-      errorMessage: 'User with this email address already exists.'
-    }
+    console.log(error)
+    return { ok: false, errorMessage: 'Account already registered' }
   }
 }
 
-export const loginWithEmailAndPassword = async ({ email, password }) => {
+export const loginWithEmailPassword = async ({ email, password }) => {
   try {
-    const { displayName, photoURL, uid } = await signInWithEmailAndPassword(
-      FirebaseAuth,
-      email,
-      password
-    )
+    const resp = await signInWithEmailAndPassword(FirebaseAuth, email, password)
+    const { uid, photoURL, displayName } = resp.user
+
     return {
       ok: true,
-      displayName,
+      uid,
       photoURL,
-      uid
+      displayName
     }
   } catch (error) {
-    return {
-      ok: false,
-      errorMessage: 'Invalid email or password.'
-    }
+    return { ok: false, errorMessage: 'Invalid email or password' }
   }
 }
 
 export const logoutFirebase = async () => {
-  try {
-    await FirebaseAuth.signOut()
-    return {
-      ok: true
-    }
-  } catch (error) {
-    return {
-      ok: false,
-      errorMessage: 'Something went wrong.'
-    }
-  }
+  return await FirebaseAuth.signOut()
 }

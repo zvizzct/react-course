@@ -1,4 +1,3 @@
-import { TurnedInNot } from '@mui/icons-material'
 import {
   Box,
   Divider,
@@ -12,19 +11,20 @@ import {
   Toolbar,
   Typography
 } from '@mui/material'
+import { TurnedInNot } from '@mui/icons-material'
 import { useSelector } from 'react-redux'
 
 export const SideBar = ({ drawerWidth = 240 }) => {
   const { displayName } = useSelector((state) => state.auth)
-  console.log(displayName)
+
   return (
     <Box
       component="nav"
       sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
     >
       <Drawer
-        variant="permanent"
-        open={true}
+        variant="permanent" // temporary
+        open
         sx={{
           display: { xs: 'block' },
           '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
@@ -36,29 +36,32 @@ export const SideBar = ({ drawerWidth = 240 }) => {
           </Typography>
         </Toolbar>
         <Divider />
+
         <List>
           {[
-            'Enero',
-            'Febrero',
-            'Marzo',
-            'Abril',
-            'Mayo',
-            'Junio',
-            'Julio',
-            'Agosto'
-          ].map((month) => (
-            <ListItem key={month} disablePadding>
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December '
+          ].map((text) => (
+            <ListItem key={text} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
                   <TurnedInNot />
                 </ListItemIcon>
                 <Grid container>
-                  <ListItemText primary={month}></ListItemText>
+                  <ListItemText primary={text} />
                   <ListItemText
-                    secondary={
-                      'Lorem ipsum dolor sit amet consectetur adipisicing elit!'
-                    }
-                  ></ListItemText>
+                    secondary={'Exercitation cillum irure elit consectetur.'}
+                  />
                 </Grid>
               </ListItemButton>
             </ListItem>

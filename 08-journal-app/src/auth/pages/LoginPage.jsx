@@ -1,29 +1,37 @@
 import { useMemo } from 'react'
-import { useDispatch } from 'react-redux'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link as RouterLink } from 'react-router-dom'
 import { Alert, Button, Grid, Link, TextField, Typography } from '@mui/material'
 import { Google } from '@mui/icons-material'
+
 import { AuthLayout } from '../layout/AuthLayout'
+
 import { useForm } from '../../hooks'
 import {
   startGoogleSignIn,
-  startLoginWithEmailAndPassword
+  startLoginWithEmailPassword
 } from '../../store/auth/thunks'
 
 export const LoginPage = () => {
   const { status, errorMessage } = useSelector((state) => state.auth)
+
   const dispatch = useDispatch()
   const { email, password, onInputChange } = useForm({
-    email: 'victor@gmail.com',
-    password: '123456'
+    email: '',
+    password: ''
   })
+
   const isAuthenticating = useMemo(() => status === 'checking', [status])
-  const onSubmit = (e) => {
-    e.preventDefault()
-    dispatch(startLoginWithEmailAndPassword({ email, password }))
+
+  const onSubmit = (event) => {
+    event.preventDefault()
+
+    // console.log({ email, password })
+    dispatch(startLoginWithEmailPassword({ email, password }))
   }
+
   const onGoogleSignIn = () => {
+    console.log('onGoogleSignIn')
     dispatch(startGoogleSignIn())
   }
 
@@ -45,6 +53,7 @@ export const LoginPage = () => {
               onChange={onInputChange}
             />
           </Grid>
+
           <Grid item xs={12} sx={{ mt: 2 }}>
             <TextField
               label="Password"
@@ -56,9 +65,10 @@ export const LoginPage = () => {
               onChange={onInputChange}
             />
           </Grid>
+
           <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
             {errorMessage && (
-              <Grid item xs={12} sm={12}>
+              <Grid item xs={12}>
                 <Alert severity="error">{errorMessage}</Alert>
               </Grid>
             )}
@@ -80,13 +90,15 @@ export const LoginPage = () => {
                 fullWidth
                 onClick={onGoogleSignIn}
               >
-                <Google /> <Typography sx={{ ml: 1 }}>Google</Typography>
+                <Google />
+                <Typography sx={{ ml: 1 }}>Google</Typography>
               </Button>
             </Grid>
           </Grid>
+
           <Grid container direction="row" justifyContent="end">
             <Link component={RouterLink} color="inherit" to="/auth/register">
-              Create new account
+              Create an account
             </Link>
           </Grid>
         </Grid>

@@ -1,38 +1,38 @@
-import { Alert, Button, Grid, Link, TextField, Typography } from '@mui/material'
-import { Link as RouterLink } from 'react-router-dom'
-import { AuthLayout } from '../layout/AuthLayout'
-import { useForm } from '../../hooks'
 import { useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { startCreatingUserWithEmailAndPassword } from '../../store/auth/thunks'
+import { Link as RouterLink } from 'react-router-dom'
+import { Alert, Button, Grid, Link, TextField, Typography } from '@mui/material'
+import { AuthLayout } from '../layout/AuthLayout'
+import { useForm } from '../../hooks'
+import { startCreatingUserWithEmailPassword } from '../../store/auth/thunks'
 
 const formData = {
-  email: 'victor@gmail.com',
-  password: '123456',
-  displayName: 'Victor'
+  email: '',
+  password: '',
+  displayName: ''
 }
 
 const formValidations = {
-  email: [(value = '') => value.includes('@'), 'Invalid email address'],
+  email: [(value) => value.includes('@'), 'The email must have an @ symbol'],
   password: [
-    (value = '') => value.length > 5,
-    'Password must be at least 6 characters'
+    (value) => value.length >= 6,
+    'The password must be more than 6 characters long.'
   ],
-  displayName: [
-    (value = '') => value.length > 2,
-    'Display name must be at least 3 characters'
-  ]
+  displayName: [(value) => value.length >= 1, 'The name is required.']
 }
 
 export const RegisterPage = () => {
   const dispatch = useDispatch()
-  const [formSubmited, setFormSubmited] = useState(false)
+  const [formSubmitted, setFormSubmitted] = useState(false)
+
   const { status, errorMessage } = useSelector((state) => state.auth)
   const isCheckingAuthentication = useMemo(
     () => status === 'checking',
     [status]
   )
+
   const {
+    formState,
     displayName,
     email,
     password,
@@ -42,16 +42,18 @@ export const RegisterPage = () => {
     emailValid,
     passwordValid
   } = useForm(formData, formValidations)
-  const onSubmit = (e) => {
-    e.preventDefault()
-    setFormSubmited(true)
+
+  const onSubmit = (event) => {
+    event.preventDefault()
+    setFormSubmitted(true)
+
     if (!isFormValid) return
-    dispatch(
-      startCreatingUserWithEmailAndPassword({ email, password, displayName })
-    )
+
+    dispatch(startCreatingUserWithEmailPassword(formState))
   }
+
   return (
-    <AuthLayout title="Register">
+    <AuthLayout title="Create Account">
       <form
         onSubmit={onSubmit}
         className="animate__animated animate__fadeIn animate__faster"
@@ -59,17 +61,18 @@ export const RegisterPage = () => {
         <Grid container>
           <Grid item xs={12} sx={{ mt: 2 }}>
             <TextField
-              label="Full Name"
+              label="Full name"
               type="text"
-              placeholder="John Smith"
+              placeholder="Full name"
               fullWidth
               name="displayName"
               value={displayName}
               onChange={onInputChange}
-              error={!!displayNameValid && formSubmited}
+              error={!!displayNameValid && formSubmitted}
               helperText={displayNameValid}
             />
           </Grid>
+
           <Grid item xs={12} sx={{ mt: 2 }}>
             <TextField
               label="Email"
@@ -79,10 +82,11 @@ export const RegisterPage = () => {
               name="email"
               value={email}
               onChange={onInputChange}
-              error={!!emailValid && formSubmited}
+              error={!!emailValid && formSubmitted}
               helperText={emailValid}
             />
           </Grid>
+
           <Grid item xs={12} sx={{ mt: 2 }}>
             <TextField
               label="Password"
@@ -92,32 +96,33 @@ export const RegisterPage = () => {
               name="password"
               value={password}
               onChange={onInputChange}
-              error={!!passwordValid && formSubmited}
+              error={!!passwordValid && formSubmitted}
               helperText={passwordValid}
             />
           </Grid>
 
           <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
             {errorMessage && (
-              <Grid item xs={12} sm={612}>
+              <Grid item xs={12}>
                 <Alert severity="error">{errorMessage}</Alert>
               </Grid>
             )}
-            <Grid item xs={12} sm={612}>
+            <Grid item xs={12}>
               <Button
                 disabled={isCheckingAuthentication}
                 type="submit"
                 variant="contained"
                 fullWidth
               >
-                Register
+                Create Account
               </Button>
             </Grid>
           </Grid>
+
           <Grid container direction="row" justifyContent="end">
-            <Typography sx={{ mr: 1 }}> Already have an account? </Typography>
+            <Typography sx={{ mr: 1 }}>Already have an account?</Typography>
             <Link component={RouterLink} color="inherit" to="/auth/login">
-              Login here!
+              Log in
             </Link>
           </Grid>
         </Grid>
