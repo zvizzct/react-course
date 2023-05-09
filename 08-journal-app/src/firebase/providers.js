@@ -81,3 +81,17 @@ export const loginWithEmailAndPassword = async ({ email, password }) => {
     }
   }
 }
+
+export const logoutFirebase = async () => {
+  try {
+    await FirebaseAuth.signOut()
+    return {
+      ok: true
+    }
+  } catch (error) {
+    return {
+      ok: false,
+      errorMessage: 'Something went wrong.'
+    }
+  }
+}
