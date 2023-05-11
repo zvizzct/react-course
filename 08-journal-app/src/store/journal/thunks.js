@@ -4,7 +4,9 @@ import {
   addNewEmptyNote,
   savingNewNote,
   setActiveNote,
-  setNotes
+  setNotes,
+  setSaving,
+  updateNote
 } from './journalSlice'
 import { loadNotes } from '../../helpers'
 
@@ -32,5 +34,17 @@ export const startLoadingNotes = () => {
     if (!uid) throw new Error('uid of user is required')
     const notes = await loadNotes(uid)
     dispatch(setNotes(notes))
+  }
+}
+
+export const startSaveNote = () => {
+  return async (dispatch, getState) => {
+    dispatch(setSaving())
+    const { uid } = getState().auth
+    const { active: note } = getState().journal
+    const noteToFirestore = { ...note }
+    const docRef = doc(FirebaseDB, `${uid}/journal/notes/${note.id}`)
+    await setDoc(docRef, noteToFirestore, { merge: true })
+    dispatch(updateNote(note))
   }
 }
