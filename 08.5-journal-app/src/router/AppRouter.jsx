@@ -1,19 +1,21 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 
-import { AuthRoutes } from '../auth/routes/AuthRoutes'
-import { JournalRoutes } from '../journal/routes/JournalRoutes'
+import { PublicRoute } from './shared/PublicRoute'
+import { PrivateRoute } from './shared/PrivateRoute'
 import { ChildJournalRoutes } from '../journal/routes/childJournalRoutes'
 import { ChildAuthRoutes } from '../auth/routes/childAuthRoutes'
+import { CheckingAuth } from '../ui'
+import { useCheckAuth } from '../hooks'
 
 const routesConfig = createBrowserRouter([
   {
     path: '/auth/',
-    element: <AuthRoutes />,
+    element: <PublicRoute />,
     children: ChildAuthRoutes
   },
   {
     path: '/',
-    element: <JournalRoutes />,
+    element: <PrivateRoute />,
     children: ChildJournalRoutes
   },
   {
@@ -23,5 +25,9 @@ const routesConfig = createBrowserRouter([
 ])
 
 export const AppRouter = () => {
+  const status = useCheckAuth()
+  if (status === 'checking') {
+    return <CheckingAuth />
+  }
   return <RouterProvider router={routesConfig} />
 }
