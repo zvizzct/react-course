@@ -5,18 +5,19 @@ import { Google } from '@mui/icons-material'
 import { AuthLayout } from '../layout/AuthLayout'
 import { useForm } from '../../hooks'
 import {
-  checkingAuthentication,
   startGoogleSignIn,
   startLogInWithEmailPassword
 } from '../../store/auth'
 import { useMemo } from 'react'
 
+const formData = {
+  email: '',
+  password: ''
+}
+
 export const LoginPage = () => {
   const dispatch = useDispatch()
-  const { email, password, onInputChange } = useForm({
-    email: '',
-    password: ''
-  })
+  const { email, password, onInputChange } = useForm(formData)
   const { status, errorMessage } = useSelector((state) => state.auth)
   const isCheckingAuthentication = useMemo(
     () => status === 'checking',
